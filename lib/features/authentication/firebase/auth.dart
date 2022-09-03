@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:not_whatsapp/common/firebase/common_firebase_storage_repository.dart';
 import 'package:not_whatsapp/common/utils/utils.dart';
 import 'package:not_whatsapp/features/authentication/screens/otp_screen.dart';
 import 'package:not_whatsapp/features/authentication/screens/user_info_screen.dart';
@@ -79,6 +80,32 @@ class Auth {
       showSnackBar(
         context: context,
         content: e.message!,
+      );
+    }
+  }
+
+//Save User Data To Firebase
+
+  void saveUserDataToFirebase({
+    required String name,
+    required File? profilePic,
+    required ProviderRef providerRef,
+    required BuildContext context,
+  }) async {
+    try {
+      String uid = firebaseAuth.currentUser!.uid;
+      String photoUrl =
+          'https://images.unsplash.com/photo-1661765697580-be9f8e39bc06?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=435&q=80';
+
+      if (profilePic != null) {
+        photoUrl = await providerRef
+            .read(commonFirebaseStorageRepositoryProvider)
+            .storeFileToFirebase('profilePic/$uid', profilePic);
+      }
+    } catch (e) {
+      showSnackBar(
+        context: context,
+        content: e.toString(),
       );
     }
   }

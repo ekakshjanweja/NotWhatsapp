@@ -76,7 +76,8 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
 
             Padding(
               padding: EdgeInsets.symmetric(
-                  vertical: MediaQuery.of(context).size.width * 0.1),
+                vertical: MediaQuery.of(context).size.width * 0.1,
+              ),
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.80,
                 height: MediaQuery.of(context).size.height * 0.08,
@@ -94,7 +95,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: MediaQuery.of(context).size.width * 0.02,
-                          vertical: MediaQuery.of(context).size.height * 0.01,
+                          vertical: MediaQuery.of(context).size.height * 0.015,
                         ),
                         child: TextField(
                           textAlign: TextAlign.start,
