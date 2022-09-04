@@ -7,6 +7,7 @@ import 'package:not_whatsapp/common/firebase/common_firebase_storage_repository.
 import 'package:not_whatsapp/common/utils/utils.dart';
 import 'package:not_whatsapp/features/authentication/screens/otp_screen.dart';
 import 'package:not_whatsapp/features/authentication/screens/user_info_screen.dart';
+import 'package:not_whatsapp/models/user_model.dart';
 
 //Provider
 
@@ -102,6 +103,17 @@ class Auth {
             .read(commonFirebaseStorageRepositoryProvider)
             .storeFileToFirebase('profilePic/$uid', profilePic);
       }
+
+      var user = UserModel(
+        name: name,
+        uid: uid,
+        profilePic: photoUrl,
+        phoneNumber: firebaseAuth.currentUser!.uid,
+        isOnline: true,
+        groupId: [],
+      );
+
+      firebaseFirestore.collection('users').doc(uid).set(user.toMap());
     } catch (e) {
       showSnackBar(
         context: context,
