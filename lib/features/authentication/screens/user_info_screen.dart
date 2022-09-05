@@ -1,19 +1,22 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:not_whatsapp/common/utils/utils.dart';
 import 'package:not_whatsapp/constants/colors.dart';
 import 'package:not_whatsapp/constants/font_styles.dart';
+import 'package:not_whatsapp/features/authentication/controller/auth_controller.dart';
 
-class UserInfoScreen extends StatefulWidget {
+class UserInfoScreen extends ConsumerStatefulWidget {
   static const String routeName = '/user-info';
   const UserInfoScreen({Key? key}) : super(key: key);
 
   @override
-  State<UserInfoScreen> createState() => _UserInfoScreenState();
+  ConsumerState<UserInfoScreen> createState() => _UserInfoScreenState();
 }
 
-class _UserInfoScreenState extends State<UserInfoScreen> {
+class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
   //Variables
 
   final TextEditingController nameController = TextEditingController();
@@ -25,9 +28,27 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     super.dispose();
   }
 
+  //Select Profile Picture
+
   void selectImage(BuildContext context) async {
     image = await pickGalleryImage(context);
     setState(() {});
+  }
+
+  //Store User Data
+
+  void storeUserData() async {
+    String name = nameController.text.trim();
+
+    print(name);
+
+    if (name.isNotEmpty) {
+      ref.read(authControllerProvider).saveUserDataToFirebase(
+            context,
+            name,
+            image,
+          );
+    }
   }
 
   @override
@@ -51,7 +72,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                         ),
                       )
                     : CircleAvatar(
-                        radius: MediaQuery.of(context).size.height * 0.01,
+                        radius: MediaQuery.of(context).size.height * 0.1,
                         backgroundImage: FileImage(
                           image!,
                         ),
@@ -66,7 +87,9 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                     onTap: () {
                       selectImage(context);
                     },
-                    child: const Icon(Icons.add_a_photo),
+                    child: const Icon(
+                      Icons.add_a_photo,
+                    ),
                   ),
                 ),
               ],
@@ -121,13 +144,15 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                     //Username Verified Check Mark
 
                     IconButton(
-                        onPressed: () {},
+                        onPressed: storeUserData,
                         icon: Padding(
                           padding: EdgeInsets.symmetric(
                             horizontal:
                                 MediaQuery.of(context).size.width * 0.01,
                           ),
-                          child: Icon(Icons.check),
+                          child: const Icon(
+                            Icons.done,
+                          ),
                         ))
                   ],
                 ),

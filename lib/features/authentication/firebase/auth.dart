@@ -8,6 +8,7 @@ import 'package:not_whatsapp/common/utils/utils.dart';
 import 'package:not_whatsapp/features/authentication/screens/otp_screen.dart';
 import 'package:not_whatsapp/features/authentication/screens/user_info_screen.dart';
 import 'package:not_whatsapp/models/user_model.dart';
+import 'package:not_whatsapp/screens/mobile_screen.dart';
 
 //Provider
 
@@ -26,6 +27,27 @@ class Auth {
     required this.firebaseAuth,
     required this.firebaseFirestore,
   });
+
+  //Get Current User Data
+
+  Future<UserModel?> getCurrentUserData() async {
+    var userData = await firebaseFirestore
+        .collection('users')
+        .doc(
+          firebaseAuth.currentUser?.uid,
+        )
+        .get();
+
+    UserModel? user;
+
+    if (userData.data() != null) {
+      user = UserModel.fromMap(
+        userData.data()!,
+      );
+    }
+
+    return user;
+  }
 
   //Sign In With Phone
 
@@ -63,6 +85,7 @@ class Auth {
     required String verificationId,
     required String userOTP,
   }) async {
+    NavigatorState state = Navigator.of(context);
     try {
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: verificationId,
@@ -72,8 +95,7 @@ class Auth {
 
       //Check what this error is //something know as mounted has to be used to implement good code
 
-      Navigator.pushNamedAndRemoveUntil(
-        context,
+      state.pushNamedAndRemoveUntil(
         UserInfoScreen.routeName,
         (route) => false,
       );
@@ -93,6 +115,8 @@ class Auth {
     required ProviderRef providerRef,
     required BuildContext context,
   }) async {
+    NavigatorState state = Navigator.of(context);
+
     try {
       String uid = firebaseAuth.currentUser!.uid;
       String photoUrl =
@@ -113,7 +137,14 @@ class Auth {
         groupId: [],
       );
 
-      firebaseFirestore.collection('users').doc(uid).set(user.toMap());
+      await firebaseFirestore.collection('users').doc(uid).set(user.toMap());
+
+      state.pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => const MobileScreen(),
+        ),
+        (route) => false,
+      );
     } catch (e) {
       showSnackBar(
         context: context,
