@@ -144,16 +144,16 @@ class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
                     //Username Verified Check Mark
 
                     IconButton(
-                        onPressed: storeUserData,
-                        icon: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal:
-                                MediaQuery.of(context).size.width * 0.01,
-                          ),
-                          child: const Icon(
-                            Icons.done,
-                          ),
-                        ))
+                      onPressed: storeUserData,
+                      icon: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.01,
+                        ),
+                        child: const Icon(
+                          Icons.done,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
