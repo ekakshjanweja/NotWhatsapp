@@ -132,7 +132,7 @@ class Auth {
         name: name,
         uid: uid,
         profilePic: photoUrl,
-        phoneNumber: firebaseAuth.currentUser!.uid,
+        phoneNumber: firebaseAuth.currentUser!.phoneNumber.toString(),
         isOnline: true,
         groupId: [],
       );
