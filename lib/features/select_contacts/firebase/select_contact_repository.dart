@@ -4,6 +4,7 @@ import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:not_whatsapp/common/utils/utils.dart';
 import 'package:not_whatsapp/models/user_model.dart';
+import 'package:not_whatsapp/screens/mobile_chat_screen.dart';
 
 final selectContactsRepositoryProvider = Provider(
   (ref) => SelectContactsRepository(
@@ -41,6 +42,7 @@ class SelectContactsRepository {
   //Select Contact
 
   void selectContact(Contact selectedContact, BuildContext context) async {
+    NavigatorState state = Navigator.of(context);
     try {
       var userCollection = await firebaseFirestore.collection('users').get();
       bool isFound = false;
@@ -57,6 +59,16 @@ class SelectContactsRepository {
         if (selectedPhoneNumber == userData.phoneNumber) {
           isFound = true;
           print(selectedPhoneNumber);
+
+          //Navigator
+
+          state.pushNamed(
+            MobileChatScreen.routeName,
+            arguments: {
+              'name': userData.name,
+              'uid': userData.uid,
+            },
+          );
         }
         if (!isFound) {
           showSnackBar(

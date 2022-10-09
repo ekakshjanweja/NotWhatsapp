@@ -93,8 +93,6 @@ class Auth {
       );
       await firebaseAuth.signInWithCredential(credential);
 
-      //Check what this error is //something know as mounted has to be used to implement good code
-
       state.pushNamedAndRemoveUntil(
         UserInfoScreen.routeName,
         (route) => false,
@@ -151,5 +149,15 @@ class Auth {
         content: e.toString(),
       );
     }
+  }
+
+  //User Data
+
+  Stream<UserModel> userData(String uid) {
+    return firebaseFirestore.collection('users').doc(uid).snapshots().map(
+          (event) => UserModel.fromMap(
+            event.data()!,
+          ),
+        );
   }
 }

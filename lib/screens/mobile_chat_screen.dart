@@ -1,11 +1,22 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
 import 'package:not_whatsapp/constants/colors.dart';
 import 'package:not_whatsapp/constants/font_styles.dart';
 import 'package:not_whatsapp/constants/info.dart';
 import 'package:not_whatsapp/widgets/Chat_list.dart';
 
 class MobileChatScreen extends StatelessWidget {
-  const MobileChatScreen({Key? key}) : super(key: key);
+  static const String routeName = '/mobile-chat-screen';
+
+  final String name;
+  final String uid;
+
+  const MobileChatScreen({
+    Key? key,
+    required this.name,
+    required this.uid,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +39,15 @@ class MobileChatScreen extends StatelessWidget {
                 const SizedBox(
                   width: 10,
                 ),
-                Text(
-                  info[0]['name'].toString(),
-                  style: FontStyle.titleStyle(),
-                ),
+                name.length >= 9
+                    ? Text(
+                        name.substring(0, 8) + '...',
+                        style: FontStyle.titleStyle(),
+                      )
+                    : Text(
+                        name,
+                        style: FontStyle.titleStyle(),
+                      ),
               ],
             ),
             //Icons
@@ -40,15 +56,15 @@ class MobileChatScreen extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {},
-                  icon: Icon(Icons.call),
+                  icon: const Icon(Icons.call),
                 ),
                 IconButton(
                   onPressed: () {},
-                  icon: Icon(Icons.video_call),
+                  icon: const Icon(Icons.video_call),
                 ),
                 IconButton(
                   onPressed: () {},
-                  icon: Icon(Icons.more_vert),
+                  icon: const Icon(Icons.more_vert),
                 ),
               ],
             ),
@@ -76,84 +92,84 @@ class MobileChatScreen extends StatelessWidget {
               ),
               color: appBarColor,
             ),
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  //Emoji
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                //Emoji
 
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.emoji_emotions_outlined,
-                      color: textColor,
-                    ),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.emoji_emotions_outlined,
+                    color: textColor,
+                    size: 24,
                   ),
+                ),
 
-                  //Files
+                //Files
 
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.attach_file_outlined,
-                      color: textColor,
-                    ),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.attach_file_outlined,
+                    color: textColor,
+                    size: 24,
                   ),
+                ),
 
-                  //Text Field
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        fillColor: searchBarColor,
-                        filled: true,
-                        hintText: 'Type a message',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: const BorderSide(
-                            width: 0,
-                            style: BorderStyle.none,
-                          ),
+                //Text Field
+
+                Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      fillColor: searchBarColor,
+                      filled: true,
+                      hintText: 'Type a message',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: const BorderSide(
+                          width: 0,
+                          style: BorderStyle.none,
                         ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          vertical: 8,
-                          horizontal: 16,
-                        ),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        vertical: 8,
+                        horizontal: 16,
                       ),
                     ),
                   ),
+                ),
 
-                  //Mic
+                //Mic
 
-                  IconButton(
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.mic,
+                    color: textColor,
+                    size: 24,
+                  ),
+                ),
+
+                //Send
+
+                Container(
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                    color: tabColor,
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
                     onPressed: () {},
                     icon: const Icon(
-                      Icons.mic,
+                      Icons.send,
                       color: textColor,
+                      size: 20,
                     ),
                   ),
-
-                  //Send
-
-                  Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: tabColor,
-                      shape: BoxShape.circle,
-                    ),
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.send,
-                        color: textColor,
-                        size: 20,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],

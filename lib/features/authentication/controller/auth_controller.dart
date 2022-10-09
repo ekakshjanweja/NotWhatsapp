@@ -71,4 +71,10 @@ class AuthController {
       context: context,
     );
   }
+
+  //Used Data
+
+  Stream<UserModel> userDataById(String uid) {
+    return auth.userData(uid);
+  }
 }
