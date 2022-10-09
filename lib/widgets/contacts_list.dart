@@ -20,10 +20,14 @@ class ContactsList extends StatelessWidget {
             onTap: () {
               if (currentWidth < 900) {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MobileChatScreen(),
-                    ));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MobileChatScreen(
+                      name: 'Tanishi Janweja',
+                      uid: '123',
+                    ),
+                  ),
+                );
               }
             },
             child: Column(
@@ -54,7 +58,7 @@ class ContactsList extends StatelessWidget {
                   //Leading
 
                   leading: CircleAvatar(
-                    radius: 30,
+                    radius: 20,
                     backgroundImage: NetworkImage(
                       info[index]['profilePic'].toString(),
                     ),
