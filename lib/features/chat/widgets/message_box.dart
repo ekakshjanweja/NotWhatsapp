@@ -2,10 +2,17 @@ import 'package:flutter/material.dart';
 
 import '../../../constants/colors.dart';
 
-class MessageBox extends StatelessWidget {
+class MessageBox extends StatefulWidget {
   const MessageBox({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<MessageBox> createState() => _MessageBoxState();
+}
+
+class _MessageBoxState extends State<MessageBox> {
+  bool showSendButton = false;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +38,18 @@ class MessageBox extends StatelessWidget {
           //Text Field
 
           Expanded(
-            child: TextField(
+            child: TextFormField(
+              onChanged: (value) {
+                if (value.isNotEmpty) {
+                  setState(() {
+                    showSendButton = true;
+                  });
+                } else {
+                  setState(() {
+                    showSendButton = false;
+                  });
+                }
+              },
               decoration: InputDecoration(
                 fillColor: searchBarColor,
                 filled: true,
@@ -77,7 +95,7 @@ class MessageBox extends StatelessWidget {
                       ),
                     ),
 
-                    //Mic
+                    //Camera
 
                     IconButton(
                       padding: const EdgeInsets.only(
@@ -100,7 +118,7 @@ class MessageBox extends StatelessWidget {
             ),
           ),
 
-          //Send
+          //Mic or Send
 
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 12),
@@ -110,8 +128,8 @@ class MessageBox extends StatelessWidget {
               color: tabColor,
               shape: BoxShape.circle,
             ),
-            child: const Icon(
-              Icons.mic,
+            child: Icon(
+              showSendButton ? Icons.send : Icons.mic,
               color: textColor,
               size: 24,
             ),
