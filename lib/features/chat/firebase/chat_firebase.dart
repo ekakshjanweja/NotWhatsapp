@@ -1,17 +1,20 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:ffi';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:not_whatsapp/common/enums/message_enum.dart';
 import 'package:not_whatsapp/common/utils/utils.dart';
-import 'package:not_whatsapp/constants/info.dart';
 import 'package:not_whatsapp/models/chat_contact.dart';
 import 'package:not_whatsapp/models/message_model.dart';
 import 'package:not_whatsapp/models/user_model.dart';
 import 'package:uuid/uuid.dart';
+
+final chatFirebaseProvider = Provider(
+  (ref) => ChatFirebase(
+    firebaseFirestore: FirebaseFirestore.instance,
+    firebaseAuth: FirebaseAuth.instance,
+  ),
+);
 
 class ChatFirebase {
   final FirebaseFirestore firebaseFirestore;

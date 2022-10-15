@@ -81,16 +81,16 @@ class MobileChatScreen extends ConsumerWidget {
         ],
       ),
       body: Column(
-        children: const [
+        children: [
           //Chats List
 
-          Expanded(
+          const Expanded(
             child: ChatList(),
           ),
 
           //Message Box
 
-          MessageBox(),
+          MessageBox(receiverUserId: uid),
         ],
       ),
     );

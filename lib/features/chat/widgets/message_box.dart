@@ -1,18 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:not_whatsapp/features/chat/controller/chat_controller.dart';
 
 import '../../../constants/colors.dart';
 
-class MessageBox extends StatefulWidget {
+class MessageBox extends ConsumerStatefulWidget {
+  final String receiverUserId;
   const MessageBox({
+    required this.receiverUserId,
     Key? key,
   }) : super(key: key);
 
   @override
-  State<MessageBox> createState() => _MessageBoxState();
+  ConsumerState<MessageBox> createState() => _MessageBoxState();
 }
 
-class _MessageBoxState extends State<MessageBox> {
+class _MessageBoxState extends ConsumerState<MessageBox> {
   bool showSendButton = false;
+  final TextEditingController _messageController = TextEditingController();
+
+  @override
+  void dispose() {
+    _messageController.dispose();
+    super.dispose();
+  }
+
+  //Send Text Message
+
+  void sendTextMessage() async {
+    if (showSendButton) {
+      ref.read(chatControllerProvider).sendTextMessage(
+            context,
+            _messageController.text.trim(),
+            widget.receiverUserId,
+          );
+
+      setState(() {
+        _messageController.text = ''; 
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +66,7 @@ class _MessageBoxState extends State<MessageBox> {
 
           Expanded(
             child: TextFormField(
+              controller: _messageController,
               onChanged: (value) {
                 if (value.isNotEmpty) {
                   setState(() {
@@ -120,18 +148,21 @@ class _MessageBoxState extends State<MessageBox> {
 
           //Mic or Send
 
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 12),
-            padding: const EdgeInsets.all(12),
-            alignment: Alignment.center,
-            decoration: const BoxDecoration(
-              color: tabColor,
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              showSendButton ? Icons.send : Icons.mic,
-              color: textColor,
-              size: 24,
+          GestureDetector(
+            onTap: sendTextMessage,
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 12),
+              padding: const EdgeInsets.all(12),
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                color: tabColor,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                showSendButton ? Icons.send : Icons.mic,
+                color: textColor,
+                size: 24,
+              ),
             ),
           ),
         ],
