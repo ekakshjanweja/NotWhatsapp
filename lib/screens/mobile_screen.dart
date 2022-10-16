@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:not_whatsapp/constants/colors.dart';
 import 'package:not_whatsapp/constants/font_styles.dart';
-import 'package:not_whatsapp/widgets/contacts_list.dart';
+import 'package:not_whatsapp/features/chat/widgets/contacts_list.dart';
 
 import '../features/select_contacts/screens/select_contacts_screen.dart';
 
@@ -50,9 +50,7 @@ class MobileScreen extends StatelessWidget {
             ],
           ),
         ),
-        body: const Center(
-          child: ContactsList(),
-        ),
+        body: const ContactsList(),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.pushNamed(
