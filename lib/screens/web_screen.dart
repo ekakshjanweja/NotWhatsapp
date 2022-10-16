@@ -53,7 +53,7 @@ class WebScreen extends StatelessWidget {
                 //Chat List
 
                 Expanded(
-                  child: ChatList(),
+                  child: ChatList(receiverUserId: 'empty user id'),
                 ),
 
                 //Message Box

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:not_whatsapp/features/authentication/controller/auth_controller.dart';
 import 'package:not_whatsapp/features/chat/firebase/chat_firebase.dart';
 import 'package:not_whatsapp/models/chat_contact.dart';
+import 'package:not_whatsapp/models/message_model.dart';
 
 final chatControllerProvider = Provider(
   (ref) {
@@ -22,6 +23,12 @@ class ChatController {
     required this.chatFirebase,
     required this.ref,
   });
+
+  //Get Message Stream
+
+  Stream<List<MessageModel>> messageStream(String receiverUserId) {
+    return chatFirebase.getMessageStream(receiverUserId);
+  }
 
   //Get Chat Stream
 
