@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:not_whatsapp/constants/colors.dart';
-import 'package:not_whatsapp/widgets/Chat_list.dart';
-import 'package:not_whatsapp/widgets/contacts_list.dart';
+import 'package:not_whatsapp/features/chat/widgets/chat_list.dart';
+import 'package:not_whatsapp/features/chat/widgets/contacts_list.dart';
 import 'package:not_whatsapp/widgets/web_profile_bar.dart';
 import 'package:not_whatsapp/widgets/web_search_bar.dart';
 import 'package:not_whatsapp/widgets/webc_chat_app_bar.dart';

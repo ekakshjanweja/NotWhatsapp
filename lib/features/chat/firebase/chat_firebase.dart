@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:not_whatsapp/common/enums/message_enum.dart';
 import 'package:not_whatsapp/common/utils/utils.dart';
+import 'package:not_whatsapp/constants/info.dart';
 import 'package:not_whatsapp/models/chat_contact.dart';
 import 'package:not_whatsapp/models/message_model.dart';
 import 'package:not_whatsapp/models/user_model.dart';
@@ -24,6 +25,39 @@ class ChatFirebase {
     required this.firebaseFirestore,
     required this.firebaseAuth,
   });
+
+  //Get Chat Stream
+
+  Stream<List<ChatContact>> getChatStream() {
+    return firebaseFirestore
+        .collection('users')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('chats')
+        .snapshots()
+        .asyncMap(
+      (event) async {
+        List<ChatContact> contacts = [];
+        for (var doc in event.docs) {
+          var chatContact = ChatContact.fromMap(doc.data());
+          var userData = await firebaseFirestore
+              .collection('users')
+              .doc(chatContact.contactId)
+              .get();
+          var user = UserModel.fromMap(userData.data()!);
+          contacts.add(
+            ChatContact(
+              name: user.name,
+              profilePic: user.profilePic,
+              contactId: user.uid,
+              timeSent: chatContact.timeSent,
+              lastMessage: chatContact.lastMessage,
+            ),
+          );
+        }
+        return contacts;
+      },
+    );
+  }
 
   //Send Text Message And Update In Firestore
 

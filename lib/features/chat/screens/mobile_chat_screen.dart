@@ -9,7 +9,7 @@ import 'package:not_whatsapp/constants/info.dart';
 import 'package:not_whatsapp/features/authentication/controller/auth_controller.dart';
 import 'package:not_whatsapp/features/chat/widgets/message_box.dart';
 import 'package:not_whatsapp/models/user_model.dart';
-import 'package:not_whatsapp/widgets/Chat_list.dart';
+import 'package:not_whatsapp/features/chat/widgets/chat_list.dart';
 
 class MobileChatScreen extends ConsumerWidget {
   static const String routeName = '/mobile-chat-screen';
