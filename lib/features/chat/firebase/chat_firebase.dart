@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:not_whatsapp/common/enums/message_enum.dart';
 import 'package:not_whatsapp/common/utils/utils.dart';
-import 'package:not_whatsapp/constants/info.dart';
 import 'package:not_whatsapp/models/chat_contact.dart';
 import 'package:not_whatsapp/models/message_model.dart';
 import 'package:not_whatsapp/models/user_model.dart';
@@ -25,6 +24,33 @@ class ChatFirebase {
     required this.firebaseFirestore,
     required this.firebaseAuth,
   });
+
+  //Get Messages Stream
+
+  Stream<List<MessageModel>> getMessageStream(String receiverUserId) {
+    return firebaseFirestore
+        .collection('users')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('chats')
+        .doc(receiverUserId)
+        .collection('messages')
+        .orderBy('timeSent')
+        .snapshots()
+        .map(
+      (event) {
+        List<MessageModel> messages = [];
+
+        for (var doc in event.docs) {
+          messages.add(
+            MessageModel.fromMap(
+              doc.data(),
+            ),
+          );
+        }
+        return messages;
+      },
+    );
+  }
 
   //Get Chat Stream
 
