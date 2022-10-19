@@ -65,6 +65,7 @@ class _ChatListState extends ConsumerState<ChatList> {
                 return UserMessageCard(
                   message: messageData.text,
                   time: DateFormat.Hm().format(messageData.timeSent),
+                  messageEnum: messageData.type,
                 );
               } else {
                 //sender message card

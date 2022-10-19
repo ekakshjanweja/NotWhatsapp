@@ -1,14 +1,19 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
+import 'package:not_whatsapp/common/enums/message_enum.dart';
 import 'package:not_whatsapp/constants/colors.dart';
-import 'package:not_whatsapp/constants/font_styles.dart';
+import 'package:not_whatsapp/features/chat/widgets/display_message_type.dart';
 
 class UserMessageCard extends StatelessWidget {
   final String message;
   final String time;
+  final MessageEnum messageEnum;
   const UserMessageCard({
     Key? key,
     required this.message,
     required this.time,
+    required this.messageEnum,
   }) : super(key: key);
 
   @override
@@ -37,20 +42,14 @@ class UserMessageCard extends StatelessWidget {
                     top: 5,
                     bottom: 30,
                   ),
-                  child: Text(
-                    message,
-                    style: FontStyle.messageText(),
-                  ),
+                  child: DisplayMessageType(
+                      message: message, messageEnum: messageEnum),
                 ),
                 Positioned(
                   bottom: 4,
                   right: 10,
                   child: Row(
                     children: [
-                      Text(
-                        time,
-                        style: FontStyle.messageText(),
-                      ),
                       const SizedBox(
                         width: 8,
                       ),
