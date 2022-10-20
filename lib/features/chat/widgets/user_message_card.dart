@@ -37,21 +37,28 @@ class UserMessageCard extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(
-                    left: 10,
-                    right: 30,
-                    top: 5,
+                    left: 0,
+                    right: 0,
+                    top: 0,
                     bottom: 30,
                   ),
-                  child: DisplayMessageType(
-                      message: message, messageEnum: messageEnum),
+                  child: Column(
+                    children: [
+                      DisplayMessageType(
+                        message: message,
+                        messageEnum: messageEnum,
+                      ),
+                    ],
+                  ),
                 ),
                 Positioned(
-                  bottom: 4,
-                  right: 10,
+                  bottom: 0,
+                  right: 0,
                   child: Row(
                     children: [
+                      Text(time),
                       const SizedBox(
-                        width: 8,
+                        width: 5,
                       ),
                       const Icon(
                         Icons.done_all,

@@ -22,6 +22,8 @@ class DisplayMessageType extends StatelessWidget {
             message,
             style: FontStyle.messageText(),
           )
-        : CachedNetworkImage(imageUrl: message);
+        : CachedNetworkImage(
+            imageUrl: message,
+          );
   }
 }
