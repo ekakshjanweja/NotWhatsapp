@@ -28,6 +28,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   cached_network_image: ^3.2.2
+  cached_video_player: ^2.0.3
   cloud_firestore: ^3.4.5
   country_picker: ^2.0.15
   cupertino_icons: ^1.0.2

@@ -2,6 +2,7 @@
     package="com.example.not_whatsapp">
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="not_whatsapp"
         android:name="${applicationName}"

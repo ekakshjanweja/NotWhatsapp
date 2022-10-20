@@ -68,6 +68,15 @@ class _MessageBoxState extends ConsumerState<MessageBox> {
     }
   }
 
+  //Select Video
+
+  void selectVideo() async {
+    File? video = await pickGalleryVideo(context);
+    if (video != null) {
+      sendFileMessage(video, MessageEnum.video);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -142,7 +151,7 @@ class _MessageBoxState extends ConsumerState<MessageBox> {
                     IconButton(
                       padding: const EdgeInsets.all(4),
                       constraints: const BoxConstraints(),
-                      onPressed: () {},
+                      onPressed: selectVideo,
                       icon: const Icon(
                         Icons.attach_file_outlined,
                         color: textColor,
