@@ -56,7 +56,7 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
                 });
               },
               icon: Icon(
-                isPlay ? Icons.play_circle : Icons.pause_circle,
+                isPlay ? Icons.pause_circle : Icons.play_circle,
               ),
             ),
           )
