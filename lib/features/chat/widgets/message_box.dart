@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:giphy_get/giphy_get.dart';
 import 'package:not_whatsapp/common/enums/message_enum.dart';
 import 'package:not_whatsapp/common/utils/utils.dart';
 import 'package:not_whatsapp/features/chat/controller/chat_controller.dart';
@@ -77,6 +78,20 @@ class _MessageBoxState extends ConsumerState<MessageBox> {
     File? video = await pickGalleryVideo(context);
     if (video != null) {
       sendFileMessage(video, MessageEnum.video);
+    }
+  }
+
+  // //Select GIF
+
+  void selectGIF() async {
+    GiphyGif? gif = await pickGIF(context);
+    if (!mounted) return; // Why was this used??
+    if (gif != null) {
+      ref.read(chatControllerProvider).sendGIFMessage(
+            context,
+            gif.url.toString(),
+            widget.receiverUserId,
+          );
     }
   }
 
@@ -175,18 +190,36 @@ class _MessageBoxState extends ConsumerState<MessageBox> {
                         bottom: 8,
                         left: 16,
                       ),
+                      prefixIcon: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          //Emoji
 
-                      //Emoji
+                          IconButton(
+                            padding: const EdgeInsets.only(left: 10),
+                            constraints: const BoxConstraints(),
+                            onPressed: toggleEmojiKeyboardContainer,
+                            icon: const Icon(
+                              Icons.emoji_emotions_outlined,
+                              color: textColor,
+                              size: 24,
+                            ),
+                          ),
 
-                      prefixIcon: IconButton(
-                        onPressed: toggleEmojiKeyboardContainer,
-                        icon: const Icon(
-                          Icons.emoji_emotions_outlined,
-                          color: textColor,
-                          size: 24,
-                        ),
+                          //GIF
+
+                          IconButton(
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            constraints: const BoxConstraints(),
+                            onPressed: selectGIF,
+                            icon: const Icon(
+                              Icons.gif,
+                              color: textColor,
+                              size: 24,
+                            ),
+                          ),
+                        ],
                       ),
-
                       suffixIcon: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         mainAxisSize: MainAxisSize.min,

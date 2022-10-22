@@ -25,8 +25,12 @@ class DisplayMessageType extends StatelessWidget {
           )
         : messageEnum == MessageEnum.video
             ? VideoPlayerItem(videoUrl: message)
-            : CachedNetworkImage(
-                imageUrl: message,
-              );
+            : messageEnum == MessageEnum.gif
+                ? CachedNetworkImage(
+                    imageUrl: message,
+                  )
+                : CachedNetworkImage(
+                    imageUrl: message,
+                  );
   }
 }

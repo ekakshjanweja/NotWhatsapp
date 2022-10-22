@@ -147,7 +147,7 @@ class ChatFirebase {
 
   void _saveDataToContactsSubCollection(
     UserModel senderUserData,
-    UserModel receiveruserData,
+    UserModel receiverUserData,
     String text,
     DateTime timeSent,
     String receiverUserId,
@@ -180,9 +180,9 @@ class ChatFirebase {
     //Sender Chat Contact
 
     var senderChatContact = ChatContact(
-      name: receiveruserData.name,
-      profilePic: receiveruserData.profilePic,
-      contactId: receiveruserData.uid,
+      name: receiverUserData.name,
+      profilePic: receiverUserData.profilePic,
+      contactId: receiverUserData.uid,
       timeSent: timeSent,
       lastMessage: text,
     );
@@ -323,6 +323,48 @@ class ChatFirebase {
         username: senderUserData.name,
         receiverUsername: receiverUserData.name,
         messageType: messageEnum,
+      );
+    } catch (e) {
+      showSnackBar(context: context, content: e.toString());
+    }
+  }
+
+  //Send Gif
+
+  void sendGIFMessage({
+    required BuildContext context,
+    required String gifUrl,
+    required String receiverUserId,
+    required UserModel senderUser,
+  }) async {
+    try {
+      var timeSent = DateTime.now();
+
+      UserModel receiverUserData;
+
+      var userDataMap =
+          await firebaseFirestore.collection('users').doc(receiverUserId).get();
+
+      receiverUserData = UserModel.fromMap(userDataMap.data()!);
+
+      var messageId = const Uuid().v1();
+
+      _saveDataToContactsSubCollection(
+        senderUser,
+        receiverUserData,
+        'GIF',
+        timeSent,
+        receiverUserId,
+      );
+
+      _saveMessageToMessageSubCollection(
+        receiverUserId: receiverUserId,
+        text: gifUrl,
+        timeSent: timeSent,
+        messageId: messageId,
+        username: senderUser.name,
+        receiverUsername: receiverUserData.name,
+        messageType: MessageEnum.gif,
       );
     } catch (e) {
       showSnackBar(context: context, content: e.toString());

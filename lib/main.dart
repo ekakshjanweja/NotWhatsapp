@@ -7,8 +7,6 @@ import 'package:not_whatsapp/features/landing/screens/landing_screen.dart';
 import 'package:not_whatsapp/firebase_options.dart';
 import 'package:not_whatsapp/router.dart';
 import 'package:not_whatsapp/screens/mobile_screen.dart';
-import 'package:not_whatsapp/screens/web_screen.dart';
-
 import 'common/widgets/error_screen.dart';
 import 'common/widgets/loader.dart';
 

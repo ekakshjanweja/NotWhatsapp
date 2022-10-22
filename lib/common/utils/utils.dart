@@ -1,7 +1,6 @@
 import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:giphy_get/giphy_get.dart';
 import 'package:image_picker/image_picker.dart';
 
 //Snack Bar
@@ -57,4 +56,22 @@ Future<File?> pickGalleryVideo(BuildContext context) async {
   }
 
   return video;
+}
+
+//Pick GIF
+
+Future<GiphyGif?> pickGIF(BuildContext context) async {
+  //E7ngZHOcb7ELb3AoFUgL4xLEAGZiFCjV
+
+  GiphyGif? gif;
+  try {
+    gif = await GiphyGet.getGif(
+      context: context,
+      lang: GiphyLanguage.english,
+      apiKey: 'E7ngZHOcb7ELb3AoFUgL4xLEAGZiFCjV',
+    );
+  } catch (e) {
+    showSnackBar(context: context, content: e.toString());
+  }
+  return gif;
 }
