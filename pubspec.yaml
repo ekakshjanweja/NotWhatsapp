@@ -27,9 +27,13 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  cached_network_image: ^3.2.2
+  cached_video_player: ^2.0.3
   cloud_firestore: ^3.4.5
   country_picker: ^2.0.15
   cupertino_icons: ^1.0.2
+  emoji_picker_flutter: ^1.5.0
+  enough_giphy_flutter: ^0.3.0
   firebase_auth: ^3.6.4
   firebase_core: ^1.21.0
   firebase_storage: ^10.3.6
@@ -37,6 +41,7 @@ dependencies:
     sdk: flutter
   flutter_contacts: ^1.1.5
   flutter_riverpod: ^2.0.0-dev.9
+  giphy_get: ^3.1.1
   google_fonts: ^3.0.1
   image_picker: ^0.8.5+3
   intl: ^0.17.0
