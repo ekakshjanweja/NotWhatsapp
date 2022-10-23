@@ -1,13 +1,15 @@
 import 'dart:io';
-
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:giphy_get/giphy_get.dart';
 import 'package:not_whatsapp/common/enums/message_enum.dart';
 import 'package:not_whatsapp/common/utils/utils.dart';
 import 'package:not_whatsapp/features/chat/controller/chat_controller.dart';
-
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../../constants/colors.dart';
 
 class MessageBox extends ConsumerStatefulWidget {
@@ -27,10 +29,35 @@ class _MessageBoxState extends ConsumerState<MessageBox> {
   final TextEditingController _messageController = TextEditingController();
   FocusNode focusNode = FocusNode();
 
+  FlutterSoundRecorder? _soundRecorder;
+  bool isRecorderInIT = false;
+  bool isRecording = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _soundRecorder = FlutterSoundRecorder();
+    openAudio();
+  }
+
+  void openAudio() async {
+    final status = await Permission.microphone.request();
+
+    if (status != PermissionStatus.granted) {
+      showSnackBar(context: context, content: 'Microphone Permission Denied');
+      // throw RecordingPermissionException('Microphone Permission Denied');
+    }
+
+    await _soundRecorder!.openRecorder();
+    isRecorderInIT = true;
+  }
+
   @override
   void dispose() {
-    _messageController.dispose();
     super.dispose();
+    _messageController.dispose();
+    _soundRecorder!.closeRecorder();
+    isRecorderInIT = false;
   }
 
   //Send Text Message
@@ -45,6 +72,23 @@ class _MessageBoxState extends ConsumerState<MessageBox> {
 
       setState(() {
         _messageController.text = '';
+      });
+    } else {
+      var tempDir = await getTemporaryDirectory();
+      var path = '${tempDir.path}/flutter_sound.aac';
+
+      // if (!isRecorderInIT) return;
+
+      if (isRecording) {
+        await _soundRecorder!.stopRecorder();
+        sendFileMessage(File(path), MessageEnum.audio);
+      } else {
+        await _soundRecorder!.startRecorder(
+          toFile: path,
+        );
+      }
+      setState(() {
+        isRecording = !isRecording;
       });
     }
   }
@@ -273,7 +317,11 @@ class _MessageBoxState extends ConsumerState<MessageBox> {
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
-                      showSendButton ? Icons.send : Icons.mic,
+                      showSendButton
+                          ? Icons.send
+                          : isRecording
+                              ? Icons.close
+                              : Icons.mic,
                       color: textColor,
                       size: 24,
                     ),
