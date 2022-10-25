@@ -6,8 +6,10 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:giphy_get/giphy_get.dart';
 import 'package:not_whatsapp/common/enums/message_enum.dart';
+import 'package:not_whatsapp/common/providers/message_reply_provider.dart';
 import 'package:not_whatsapp/common/utils/utils.dart';
 import 'package:not_whatsapp/features/chat/controller/chat_controller.dart';
+import 'package:not_whatsapp/features/chat/widgets/message_reply_preview.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../constants/colors.dart';
@@ -125,7 +127,7 @@ class _MessageBoxState extends ConsumerState<MessageBox> {
     }
   }
 
-  // //Select GIF
+  //Select GIF
 
   void selectGIF() async {
     GiphyGif? gif = await pickGIF(context);
@@ -177,6 +179,8 @@ class _MessageBoxState extends ConsumerState<MessageBox> {
 
   @override
   Widget build(BuildContext context) {
+    final messageReply = ref.watch(messageReplyProvider);
+    final isShowMessageReply = messageReply != null;
     return Container(
       height: isShowEmojiContainer
           ? MediaQuery.of(context).size.height * 0.51
@@ -191,6 +195,7 @@ class _MessageBoxState extends ConsumerState<MessageBox> {
       ),
       child: Column(
         children: [
+          isShowMessageReply ? const MessageReplyPreview() : const SizedBox(),
           Padding(
             padding: const EdgeInsets.only(
               left: 12,
