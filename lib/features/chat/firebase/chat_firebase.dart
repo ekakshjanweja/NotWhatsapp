@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:not_whatsapp/common/enums/message_enum.dart';
 import 'package:not_whatsapp/common/firebase/common_firebase_storage_repository.dart';
+import 'package:not_whatsapp/common/providers/message_reply_provider.dart';
 import 'package:not_whatsapp/common/utils/utils.dart';
 import 'package:not_whatsapp/models/chat_contact.dart';
 import 'package:not_whatsapp/models/message_model.dart';
@@ -94,6 +95,7 @@ class ChatFirebase {
     required String text,
     required String receiverUserId,
     required UserModel senderUserData,
+    required MessageReply? messageReply,
   }) async {
     try {
       //Time of message send
@@ -131,6 +133,10 @@ class ChatFirebase {
         messageId: messageId,
         receiverUsername: receiverUserData.name,
         username: senderUserData.name,
+        messageReply: messageReply,
+        senderUsername: senderUserData.name,
+        messageEnum:
+            messageReply == null ? MessageEnum.text : messageReply.messageEnum,
       );
 
       //users -> sender id -> receiver id -> messages -> message id -> store message
@@ -201,15 +207,17 @@ class ChatFirebase {
 
   //Save Message To Message Sub Collection
 
-  void _saveMessageToMessageSubCollection({
-    required String receiverUserId,
-    required String text,
-    required DateTime timeSent,
-    required String messageId,
-    required String username,
-    required String receiverUsername,
-    required MessageEnum messageType,
-  }) async {
+  void _saveMessageToMessageSubCollection(
+      {required String receiverUserId,
+      required String text,
+      required DateTime timeSent,
+      required String messageId,
+      required String username,
+      required String receiverUsername,
+      required MessageEnum messageType,
+      required MessageReply? messageReply,
+      required String senderUsername,
+      required MessageEnum messageEnum}) async {
     final message = MessageModel(
       senderId: firebaseAuth.currentUser!.uid,
       receiverId: receiverUserId,
@@ -218,6 +226,14 @@ class ChatFirebase {
       timeSent: timeSent,
       messageId: messageId,
       isSeen: false,
+      repliedMessage: messageReply == null ? '' : messageReply.message,
+      repliedTo: messageReply == null
+          ? ''
+          : messageReply.isMe
+              ? senderUsername
+              : receiverUsername,
+      repliedMessageType:
+          messageReply == null ? messageEnum : messageReply.messageEnum,
     );
 
     //users -> sender id -> receiver id -> messages -> message id -> store message
@@ -256,6 +272,7 @@ class ChatFirebase {
     required UserModel senderUserData,
     required ProviderRef ref,
     required MessageEnum messageEnum,
+    required MessageReply? messageReply,
   }) async {
     try {
       //Time Sent
@@ -323,6 +340,10 @@ class ChatFirebase {
         username: senderUserData.name,
         receiverUsername: receiverUserData.name,
         messageType: messageEnum,
+        messageReply: messageReply,
+        senderUsername: senderUserData.name,
+        messageEnum:
+            messageReply == null ? MessageEnum.text : messageReply.messageEnum,
       );
     } catch (e) {
       showSnackBar(context: context, content: e.toString());
@@ -336,6 +357,7 @@ class ChatFirebase {
     required String gifUrl,
     required String receiverUserId,
     required UserModel senderUser,
+    required MessageReply? messageReply,
   }) async {
     try {
       var timeSent = DateTime.now();
@@ -365,6 +387,10 @@ class ChatFirebase {
         username: senderUser.name,
         receiverUsername: receiverUserData.name,
         messageType: MessageEnum.gif,
+        messageReply: messageReply,
+        senderUsername: senderUser.name,
+        messageEnum:
+            messageReply == null ? MessageEnum.text : messageReply.messageEnum,
       );
     } catch (e) {
       showSnackBar(context: context, content: e.toString());

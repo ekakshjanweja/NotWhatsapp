@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:not_whatsapp/common/providers/message_reply_provider.dart';
+import 'package:not_whatsapp/constants/colors.dart';
 import 'package:not_whatsapp/constants/font_styles.dart';
 
 class MessageReplyPreview extends ConsumerWidget {
@@ -17,37 +18,48 @@ class MessageReplyPreview extends ConsumerWidget {
     final messageReply = ref.watch(messageReplyProvider);
 
     return Container(
-      padding: const EdgeInsets.all(8),
-      child: Column(
+      color: appBarColor.withOpacity(0.5),
+      width: MediaQuery.of(context).size.width,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           //Reply Message
 
+          Text(
+            messageReply!.isMe ? 'Me' : 'Opposite',
+            style: FontStyle.bodyText(context).copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          const SizedBox(
+            width: 16,
+          ),
+
+          //Reply
+
           Expanded(
             child: Text(
-              messageReply!.isMe ? 'Me' : 'Opposite',
-              style: FontStyle.bodyText(context).copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              messageReply.message,
+              overflow: TextOverflow.fade,
+              maxLines: 5,
             ),
+          ),
+
+          const SizedBox(
+            width: 16,
           ),
 
           //Close Icon
 
           GestureDetector(
-            onTap: () {},
+            onTap: () => cancelReply(ref),
             child: const Icon(
               Icons.close,
               size: 16,
             ),
           ),
-
-          const SizedBox(
-            height: 8,
-          ),
-
-          //Reply
-
-          Text(messageReply.message),
         ],
       ),
     );
