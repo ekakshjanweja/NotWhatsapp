@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:not_whatsapp/common/enums/message_enum.dart';
 import 'package:not_whatsapp/constants/colors.dart';
+import 'package:not_whatsapp/constants/font_styles.dart';
 import 'package:not_whatsapp/features/chat/widgets/display_message_type.dart';
 import 'package:swipe_to/swipe_to.dart';
 
@@ -27,6 +28,7 @@ class UserMessageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isReplying = repliedText.isNotEmpty;
     return SwipeTo(
       onLeftSwipe: onLeftSwipe,
       child: Align(
@@ -54,7 +56,46 @@ class UserMessageCard extends StatelessWidget {
                       bottom: 30,
                     ),
                     child: Column(
+                      crossAxisAlignment: isReplying
+                          ? CrossAxisAlignment.start
+                          : CrossAxisAlignment.center,
                       children: [
+                        if (isReplying) ...{
+                          Container(
+                            decoration: BoxDecoration(
+                                color: backgroundColor.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(5)),
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 8,
+                              horizontal: 8,
+                            ),
+                            child: Text(
+                              username,
+                              style: FontStyle.bodyText(context).copyWith(
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                                color: backgroundColor.withOpacity(0.8),
+                                borderRadius: BorderRadius.circular(5)),
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 16,
+                              horizontal: 16,
+                            ),
+                            child: DisplayMessageType(
+                              message: repliedText,
+                              messageEnum: repliedMessageType,
+                            ),
+                          )
+                        },
+                        const SizedBox(
+                          height: 8,
+                        ),
                         DisplayMessageType(
                           message: message,
                           messageEnum: messageEnum,

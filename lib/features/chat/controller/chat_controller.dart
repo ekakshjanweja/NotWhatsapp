@@ -56,6 +56,7 @@ class ChatController {
             messageReply: messageReply,
           ),
         );
+    ref.read(messageReplyProvider.state).update((state) => null);
   }
 
   //Send Files In Messages
@@ -78,9 +79,11 @@ class ChatController {
             messageReply: messageReply,
           ),
         );
+
+    ref.read(messageReplyProvider.state).update((state) => null);
   }
 
-  // //Send GIF
+  //Send GIF
 
   void sendGIFMessage(
     BuildContext context,
@@ -101,5 +104,6 @@ class ChatController {
             messageReply: messageReply,
           ),
         );
+    ref.read(messageReplyProvider.state).update((state) => null);
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:not_whatsapp/common/providers/message_reply_provider.dart';
 import 'package:not_whatsapp/constants/colors.dart';
 import 'package:not_whatsapp/constants/font_styles.dart';
+import 'package:not_whatsapp/features/chat/widgets/display_message_type.dart';
 
 class MessageReplyPreview extends ConsumerWidget {
   const MessageReplyPreview({super.key});
@@ -40,10 +41,9 @@ class MessageReplyPreview extends ConsumerWidget {
           //Reply
 
           Expanded(
-            child: Text(
-              messageReply.message,
-              overflow: TextOverflow.fade,
-              maxLines: 5,
+            child: DisplayMessageType(
+              message: messageReply.message,
+              messageEnum: messageReply.messageEnum,
             ),
           ),
 

@@ -23,38 +23,40 @@ class DisplayMessageType extends StatelessWidget {
 
     final AudioPlayer audioPlayer = AudioPlayer();
 
-    return messageEnum == MessageEnum.text
-        ? Text(
-            message,
-            style: FontStyle.messageText(),
-          )
-        : messageEnum == MessageEnum.video
-            ? VideoPlayerItem(videoUrl: message)
-            : messageEnum == MessageEnum.gif
-                ? CachedNetworkImage(
-                    imageUrl: message,
-                  )
-                : messageEnum == MessageEnum.audio
-                    ? StatefulBuilder(builder: (context, setstate) {
-                        return IconButton(
-                          constraints: const BoxConstraints(minWidth: 100),
-                          onPressed: () async {
-                            if (isPlaying) {
-                              await audioPlayer.pause();
-                            } else {
-                              await audioPlayer.play(UrlSource(message));
-                            }
-                            setstate(() {
-                              isPlaying = !isPlaying;
-                            });
-                          },
-                          icon: Icon(isPlaying
-                              ? Icons.pause_circle
-                              : Icons.play_circle),
-                        );
-                      })
-                    : CachedNetworkImage(
-                        imageUrl: message,
-                      );
+    return Container(
+      child: messageEnum == MessageEnum.text
+          ? Text(
+              message,
+              style: FontStyle.messageText(),
+            )
+          : messageEnum == MessageEnum.video
+              ? VideoPlayerItem(videoUrl: message)
+              : messageEnum == MessageEnum.gif
+                  ? CachedNetworkImage(
+                      imageUrl: message,
+                    )
+                  : messageEnum == MessageEnum.audio
+                      ? StatefulBuilder(builder: (context, setstate) {
+                          return IconButton(
+                            constraints: const BoxConstraints(minWidth: 100),
+                            onPressed: () async {
+                              if (isPlaying) {
+                                await audioPlayer.pause();
+                              } else {
+                                await audioPlayer.play(UrlSource(message));
+                              }
+                              setstate(() {
+                                isPlaying = !isPlaying;
+                              });
+                            },
+                            icon: Icon(isPlaying
+                                ? Icons.pause_circle
+                                : Icons.play_circle),
+                          );
+                        })
+                      : CachedNetworkImage(
+                          imageUrl: message,
+                        ),
+    );
   }
 }
