@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -18,19 +19,44 @@ class DisplayMessageType extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return messageEnum == MessageEnum.text
-        ? Text(
-            message,
-            style: FontStyle.messageText(),
-          )
-        : messageEnum == MessageEnum.video
-            ? VideoPlayerItem(videoUrl: message)
-            : messageEnum == MessageEnum.gif
-                ? CachedNetworkImage(
-                    imageUrl: message,
-                  )
-                : CachedNetworkImage(
-                    imageUrl: message,
-                  );
+    bool isPlaying = false;
+
+    final AudioPlayer audioPlayer = AudioPlayer();
+
+    return Container(
+      child: messageEnum == MessageEnum.text
+          ? Text(
+              message,
+              style: FontStyle.messageText(),
+            )
+          : messageEnum == MessageEnum.video
+              ? VideoPlayerItem(videoUrl: message)
+              : messageEnum == MessageEnum.gif
+                  ? CachedNetworkImage(
+                      imageUrl: message,
+                    )
+                  : messageEnum == MessageEnum.audio
+                      ? StatefulBuilder(builder: (context, setstate) {
+                          return IconButton(
+                            constraints: const BoxConstraints(minWidth: 100),
+                            onPressed: () async {
+                              if (isPlaying) {
+                                await audioPlayer.pause();
+                              } else {
+                                await audioPlayer.play(UrlSource(message));
+                              }
+                              setstate(() {
+                                isPlaying = !isPlaying;
+                              });
+                            },
+                            icon: Icon(isPlaying
+                                ? Icons.pause_circle
+                                : Icons.play_circle),
+                          );
+                        })
+                      : CachedNetworkImage(
+                          imageUrl: message,
+                        ),
+    );
   }
 }

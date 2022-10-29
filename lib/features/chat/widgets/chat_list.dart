@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:not_whatsapp/common/enums/message_enum.dart';
+import 'package:not_whatsapp/common/providers/message_reply_provider.dart';
 
 import 'package:not_whatsapp/common/widgets/loader.dart';
 import 'package:not_whatsapp/features/chat/controller/chat_controller.dart';
@@ -27,9 +29,24 @@ class _ChatListState extends ConsumerState<ChatList> {
 
   final ScrollController messageController = ScrollController();
 
+  //Message Left Swipe
+
+  void onMessageLeftSwipe({
+    required String message,
+    required bool isMe,
+    required MessageEnum messageEnum,
+  }) {
+    ref.read(messageReplyProvider.state).update(
+          (state) => MessageReply(
+            message: message,
+            isMe: isMe,
+            messageEnum: messageEnum,
+          ),
+        );
+  }
+
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     messageController.dispose();
   }
@@ -59,6 +76,18 @@ class _ChatListState extends ConsumerState<ChatList> {
 
               final messageData = snapshot.data![index];
 
+              //Seen Message Functionality
+
+              if (!messageData.isSeen &&
+                  messageData.receiverId ==
+                      FirebaseAuth.instance.currentUser!.uid) {
+                ref.read(chatControllerProvider).isMessageSeen(
+                      context,
+                      widget.receiverUserId,
+                      messageData.messageId,
+                    );
+              }
+
               if (messageData.senderId ==
                   FirebaseAuth.instance.currentUser!.uid) {
                 // My message card
@@ -66,12 +95,30 @@ class _ChatListState extends ConsumerState<ChatList> {
                   message: messageData.text,
                   time: DateFormat.Hm().format(messageData.timeSent),
                   messageEnum: messageData.type,
+                  repliedText: messageData.repliedMessage,
+                  username: messageData.repliedTo,
+                  repliedMessageType: messageData.repliedMessageType,
+                  onLeftSwipe: (() => onMessageLeftSwipe(
+                        message: messageData.text,
+                        isMe: true,
+                        messageEnum: messageData.type,
+                      )),
+                  isSeen: messageData.isSeen,
                 );
               } else {
                 //sender message card
                 return SenderMessageCard(
                   message: messageData.text,
                   time: DateFormat.Hm().format(messageData.timeSent),
+                  messageEnum: messageData.type,
+                  repliedText: messageData.repliedMessage,
+                  username: messageData.repliedTo,
+                  repliedMessageType: messageData.repliedMessageType,
+                  onRightSwipe: (() => onMessageLeftSwipe(
+                        message: messageData.text,
+                        isMe: false,
+                        messageEnum: messageData.type,
+                      )),
                 );
               }
             }),
