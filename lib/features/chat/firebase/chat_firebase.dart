@@ -396,4 +396,38 @@ class ChatFirebase {
       showSnackBar(context: context, content: e.toString());
     }
   }
+
+  //Message Seen Functionality
+
+  void isMessageSeen(
+    BuildContext context,
+    String receiverUserId,
+    String messageId,
+  ) async {
+    try {
+      //Update isSeen in messages subcollection of user
+
+      await firebaseFirestore
+          .collection('users')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('chats')
+          .doc(receiverUserId)
+          .collection('messages')
+          .doc(messageId)
+          .update({'isSeen': true});
+
+      //Update isSeen in messages subcollection of sender
+
+      await firebaseFirestore
+          .collection('users')
+          .doc(receiverUserId)
+          .collection('chats')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('messages')
+          .doc(messageId)
+          .update({'isSeen': true});
+    } catch (e) {
+      showSnackBar(context: context, content: e.toString());
+    }
+  }
 }

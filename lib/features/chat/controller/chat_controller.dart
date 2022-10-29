@@ -106,4 +106,18 @@ class ChatController {
         );
     ref.read(messageReplyProvider.state).update((state) => null);
   }
+
+  //Message Seen Functionality
+
+  void isMessageSeen(
+    BuildContext context,
+    String receiverUserId,
+    String messageId,
+  ) {
+    chatFirebase.isMessageSeen(
+      context,
+      receiverUserId,
+      messageId,
+    );
+  }
 }

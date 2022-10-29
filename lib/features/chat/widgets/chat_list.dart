@@ -47,7 +47,6 @@ class _ChatListState extends ConsumerState<ChatList> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     messageController.dispose();
   }
@@ -77,6 +76,18 @@ class _ChatListState extends ConsumerState<ChatList> {
 
               final messageData = snapshot.data![index];
 
+              //Seen Message Functionality
+
+              if (!messageData.isSeen &&
+                  messageData.receiverId ==
+                      FirebaseAuth.instance.currentUser!.uid) {
+                ref.read(chatControllerProvider).isMessageSeen(
+                      context,
+                      widget.receiverUserId,
+                      messageData.messageId,
+                    );
+              }
+
               if (messageData.senderId ==
                   FirebaseAuth.instance.currentUser!.uid) {
                 // My message card
@@ -92,6 +103,7 @@ class _ChatListState extends ConsumerState<ChatList> {
                         isMe: true,
                         messageEnum: messageData.type,
                       )),
+                  isSeen: messageData.isSeen,
                 );
               } else {
                 //sender message card

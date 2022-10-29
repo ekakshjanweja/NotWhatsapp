@@ -10,11 +10,13 @@ import 'package:swipe_to/swipe_to.dart';
 class UserMessageCard extends StatelessWidget {
   final String message;
   final String time;
+
   final MessageEnum messageEnum;
   final VoidCallback onLeftSwipe;
   final String repliedText;
   final String username;
   final MessageEnum repliedMessageType;
+  final bool isSeen;
   const UserMessageCard({
     Key? key,
     required this.message,
@@ -24,6 +26,7 @@ class UserMessageCard extends StatelessWidget {
     required this.repliedText,
     required this.username,
     required this.repliedMessageType,
+    required this.isSeen,
   }) : super(key: key);
 
   @override
@@ -112,9 +115,10 @@ class UserMessageCard extends StatelessWidget {
                         const SizedBox(
                           width: 5,
                         ),
-                        const Icon(
-                          Icons.done_all,
+                        Icon(
+                          isSeen ? Icons.done_all : Icons.done,
                           size: 20,
+                          color: isSeen ? Colors.blue : Colors.white60,
                         ),
                       ],
                     ),
