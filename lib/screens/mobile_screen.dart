@@ -1,9 +1,14 @@
+import 'dart:io';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:not_whatsapp/common/utils/utils.dart';
 import 'package:not_whatsapp/constants/colors.dart';
 import 'package:not_whatsapp/constants/font_styles.dart';
 import 'package:not_whatsapp/features/authentication/controller/auth_controller.dart';
 import 'package:not_whatsapp/features/chat/widgets/contacts_list.dart';
+import 'package:not_whatsapp/features/status/screens/confirm_status_screen.dart';
+import 'package:not_whatsapp/features/status/screens/status_contacts_screen.dart';
 
 import '../features/select_contacts/screens/select_contacts_screen.dart';
 
@@ -15,13 +20,17 @@ class MobileScreen extends ConsumerStatefulWidget {
 }
 
 class _MobileScreenState extends ConsumerState<MobileScreen>
-    with WidgetsBindingObserver {
+    with WidgetsBindingObserver, TickerProviderStateMixin {
+  //Tab Controller
+  late TabController tabController;
+
   //Initialize the binding observer for state of app
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    tabController = TabController(length: 3, vsync: this);
   }
 
   //Dispose
@@ -78,6 +87,7 @@ class _MobileScreenState extends ConsumerState<MobileScreen>
             ),
           ],
           bottom: TabBar(
+            controller: tabController,
             labelStyle: FontStyle.lableStyle(),
             unselectedLabelStyle: FontStyle.lableStyle(),
             indicatorColor: tabColor,
@@ -91,13 +101,32 @@ class _MobileScreenState extends ConsumerState<MobileScreen>
             ],
           ),
         ),
-        body: const ContactsList(),
+        body: TabBarView(
+          controller: tabController,
+          children: const [
+            ContactsList(),
+            StatusContactsScreen(),
+            Text('Calls'),
+          ],
+        ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.pushNamed(
-              context,
-              SelectContactsScreen.routeName,
-            );
+          onPressed: () async {
+            if (tabController.index == 0) {
+              Navigator.pushNamed(
+                context,
+                SelectContactsScreen.routeName,
+              );
+            } else {
+              File? pickedImage = await pickGalleryImage(context);
+              if (pickedImage != null) {
+                if (!mounted) return;
+                Navigator.pushNamed(
+                  context,
+                  ConfirmStatusScreen.routeName,
+                  arguments: pickedImage,
+                );
+              }
+            }
           },
           child: const Icon(
             Icons.message,
