@@ -36,7 +36,7 @@ class ContactsList extends ConsumerWidget {
                         MobileChatScreen.routeName,
                         arguments: {
                           'name': chatStreamTileData.name,
-                          'uid': chatStreamTileData.contactId, 
+                          'uid': chatStreamTileData.contactId,
                         },
                       );
                     }
@@ -91,7 +91,7 @@ class ContactsList extends ConsumerWidget {
                             EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                         child: Divider(
                           color: dividerColor,
-                          indent: 80,
+                          indent: 00,
                         ),
                       ),
                     ],

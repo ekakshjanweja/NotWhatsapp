@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -135,5 +136,55 @@ class StatusRepository {
     } catch (e) {
       showSnackBar(context: context, content: e.toString());
     }
+  }
+
+  //Get Status
+
+  Future<List<StatusModel>> getStatus(BuildContext context) async {
+    List<StatusModel> statusData = [];
+
+    try {
+      //Get Contacts
+
+      List<Contact> contacts = [];
+
+      if (await FlutterContacts.requestPermission()) {
+        contacts = await FlutterContacts.getContacts(withProperties: true);
+      }
+
+      for (int i = 0; i < contacts.length; i++) {
+        var statusSnapshot = await firebaseFirestore
+            .collection('status')
+            .where(
+              'phoneNumber',
+              isEqualTo: contacts[i].phones[0].number.replaceAll(
+                    ' ',
+                    '',
+                  ),
+            )
+            .where(
+              'createdAt',
+              isGreaterThan: DateTime.now()
+                  .subtract(
+                    const Duration(hours: 24),
+                  )
+                  .millisecondsSinceEpoch, //Epoch : Milli seconds since Jan 1 1970
+            )
+            .get();
+
+        for (var tempData in statusSnapshot.docs) {
+          StatusModel tempStatus = StatusModel.fromMap(tempData.data());
+          if (tempStatus.whoCanSee.contains(firebaseAuth.currentUser!.uid)) {
+            statusData.add(tempStatus);
+          }
+        }
+      }
+      print(statusData);
+    } catch (e) {
+      if (kDebugMode) print(e);
+      showSnackBar(context: context, content: e.toString());
+    }
+
+    return statusData;
   }
 }
