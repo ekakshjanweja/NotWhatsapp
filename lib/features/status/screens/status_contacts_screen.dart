@@ -4,6 +4,7 @@ import 'package:not_whatsapp/common/widgets/loader.dart';
 import 'package:not_whatsapp/constants/colors.dart';
 import 'package:not_whatsapp/constants/font_styles.dart';
 import 'package:not_whatsapp/features/status/controller/status_controller.dart';
+import 'package:not_whatsapp/features/status/screens/status_screen.dart';
 import 'package:not_whatsapp/models/status_model.dart';
 
 class StatusContactsScreen extends ConsumerWidget {
@@ -17,6 +18,7 @@ class StatusContactsScreen extends ConsumerWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Loader();
         }
+
         return ListView.builder(
           itemCount: snapshot.data!.length,
           itemBuilder: (context, index) {
@@ -25,7 +27,13 @@ class StatusContactsScreen extends ConsumerWidget {
             return Column(
               children: [
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      StatusScreen.routeName,
+                      arguments: statusData,
+                    );
+                  },
                   child: ListTile(
                     //Padding
 
