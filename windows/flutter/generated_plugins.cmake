@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  agora_rtc_engine
   audioplayers_windows
   emoji_picker_flutter
   permission_handler_windows

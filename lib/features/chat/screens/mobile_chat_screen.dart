@@ -4,6 +4,7 @@ import 'package:not_whatsapp/common/widgets/loader.dart';
 import 'package:not_whatsapp/constants/colors.dart';
 import 'package:not_whatsapp/constants/font_styles.dart';
 import 'package:not_whatsapp/features/authentication/controller/auth_controller.dart';
+import 'package:not_whatsapp/features/calls/controller/call_controller.dart';
 import 'package:not_whatsapp/features/chat/widgets/message_box.dart';
 import 'package:not_whatsapp/models/user_model.dart';
 import 'package:not_whatsapp/features/chat/widgets/chat_list.dart';
@@ -23,6 +24,21 @@ class MobileChatScreen extends ConsumerWidget {
     required this.isGroupChat,
     required this.displayImage,
   }) : super(key: key);
+
+  //Make A Call
+
+  void makeACall(
+    WidgetRef ref,
+    BuildContext context,
+  ) {
+    ref.read(callControllerProvider).makeACall(
+          context,
+          name,
+          uid,
+          displayImage,
+          isGroupChat,
+        );
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -89,7 +105,9 @@ class MobileChatScreen extends ConsumerWidget {
             icon: const Icon(Icons.call),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              makeACall(ref, context);
+            },
             icon: const Icon(Icons.video_call),
           ),
           IconButton(
