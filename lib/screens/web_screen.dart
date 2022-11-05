@@ -52,10 +52,6 @@ class WebScreen extends StatelessWidget {
 
                 //Chat List
 
-                Expanded(
-                  child: ChatList(receiverUserId: 'empty user id'),
-                ),
-
                 //Message Box
 
                 Container(

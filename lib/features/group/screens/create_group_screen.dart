@@ -126,7 +126,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
 
             //Select Group Contacts
 
-            SelectGroupContacts(),
+            const  SelectGroupContacts(),
           ],
         ),
       ),

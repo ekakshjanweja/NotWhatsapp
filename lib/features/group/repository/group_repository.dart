@@ -67,6 +67,7 @@ class GroupRepository {
           lastMessage: '',
           groupUsers: [firebaseAuth.currentUser!.uid, ...groupUsers],
           groupImage: groupImageUrl,
+          timeSent: DateTime.now(),
         );
 
         await firebaseFirestore
