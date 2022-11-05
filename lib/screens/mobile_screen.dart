@@ -7,6 +7,7 @@ import 'package:not_whatsapp/constants/colors.dart';
 import 'package:not_whatsapp/constants/font_styles.dart';
 import 'package:not_whatsapp/features/authentication/controller/auth_controller.dart';
 import 'package:not_whatsapp/features/chat/widgets/contacts_list.dart';
+import 'package:not_whatsapp/features/group/screens/create_group_screen.dart';
 import 'package:not_whatsapp/features/status/screens/confirm_status_screen.dart';
 import 'package:not_whatsapp/features/status/screens/status_contacts_screen.dart';
 
@@ -78,12 +79,21 @@ class _MobileScreenState extends ConsumerState<MobileScreen>
                 color: textColor,
               ),
             ),
-            IconButton(
-              onPressed: () {},
+            PopupMenuButton(
               icon: const Icon(
                 Icons.more_vert,
-                color: textColor,
               ),
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  child: const Text('New Group'),
+                  onTap: () => Future(
+                    () => (Navigator.pushNamed(
+                      context,
+                      CreateGroupScreen.routeName,
+                    )),
+                  ),
+                ),
+              ],
             ),
           ],
           bottom: TabBar(
