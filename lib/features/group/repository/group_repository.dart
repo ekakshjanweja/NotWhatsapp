@@ -47,7 +47,7 @@ class GroupRepository {
             )
             .get();
 
-        if (userCollection.docs[0].exists) {
+        if (userCollection.docs.isNotEmpty && userCollection.docs[0].exists) {
           groupUsers.add(userCollection.docs[0].data()['uid']);
         }
 

@@ -34,6 +34,7 @@ class _SelectGroupContactsState extends ConsumerState<SelectGroupContacts> {
     ref
         .read(selectedGroupContacts.state)
         .update((state) => [...state, contact]);
+    setState(() {});
   }
 
   @override

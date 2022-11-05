@@ -39,6 +39,8 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
               selectedGroupContacts,
             ),
           );
+      ref.read(selectedGroupContacts.state).update((state) => []);
+      Navigator.pop(context);
     }
   }
 
@@ -129,7 +131,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: createGroup,
         backgroundColor: tabColor,
         child: const Icon(Icons.done),
       ),
