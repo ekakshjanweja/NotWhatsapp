@@ -15,9 +15,11 @@ import 'package:not_whatsapp/features/chat/widgets/user_message_card.dart';
 
 class ChatList extends ConsumerStatefulWidget {
   final String receiverUserId;
+  final bool isGroupChat;
   const ChatList({
     super.key,
     required this.receiverUserId,
+    required this.isGroupChat,
   });
 
   @override
@@ -54,9 +56,13 @@ class _ChatListState extends ConsumerState<ChatList> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<MessageModel>>(
-        stream: ref
-            .watch(chatControllerProvider)
-            .messageStream(widget.receiverUserId),
+        stream: widget.isGroupChat
+            ? ref
+                .read(chatControllerProvider)
+                .groupMessageStream(widget.receiverUserId)
+            : ref
+                .watch(chatControllerProvider)
+                .messageStream(widget.receiverUserId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Loader();

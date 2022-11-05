@@ -16,8 +16,10 @@ import '../../../constants/colors.dart';
 
 class MessageBox extends ConsumerStatefulWidget {
   final String receiverUserId;
+  final bool isGroupChat;
   const MessageBox({
     required this.receiverUserId,
+    required this.isGroupChat,
     Key? key,
   }) : super(key: key);
 
@@ -70,6 +72,7 @@ class _MessageBoxState extends ConsumerState<MessageBox> {
             context,
             _messageController.text.trim(),
             widget.receiverUserId,
+            widget.isGroupChat,
           );
 
       setState(() {
@@ -106,6 +109,7 @@ class _MessageBoxState extends ConsumerState<MessageBox> {
           file: file,
           receiverUserId: widget.receiverUserId,
           messageEnum: messageEnum,
+          isGroupChat: widget.isGroupChat,
         );
   }
 
@@ -137,6 +141,7 @@ class _MessageBoxState extends ConsumerState<MessageBox> {
             context,
             gif.url.toString(),
             widget.receiverUserId,
+            widget.isGroupChat,
           );
     }
   }

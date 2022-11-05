@@ -5,6 +5,7 @@ import 'package:not_whatsapp/common/widgets/error_screen.dart';
 import 'package:not_whatsapp/features/authentication/screens/login_screen.dart';
 import 'package:not_whatsapp/features/authentication/screens/otp_screen.dart';
 import 'package:not_whatsapp/features/authentication/screens/user_info_screen.dart';
+import 'package:not_whatsapp/features/group/screens/create_group_screen.dart';
 import 'package:not_whatsapp/features/select_contacts/screens/select_contacts_screen.dart';
 import 'package:not_whatsapp/features/chat/screens/mobile_chat_screen.dart';
 import 'package:not_whatsapp/features/status/screens/confirm_status_screen.dart';
@@ -44,10 +45,14 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       final arguments = settings.arguments as Map<String, dynamic>;
       final name = arguments['name'];
       final uid = arguments['uid'];
+      final isGroupChat = arguments['isGroupChat'];
+      final displayImage = arguments['displayImage'];
       return MaterialPageRoute(
         builder: (context) => MobileChatScreen(
           name: name,
           uid: uid,
+          isGroupChat: isGroupChat,
+          displayImage: displayImage,
         ),
       );
 
@@ -57,6 +62,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         builder: (context) => StatusScreen(
           status: status,
         ),
+      );
+
+    case CreateGroupScreen.routeName:
+      return MaterialPageRoute(
+        builder: (context) => const CreateGroupScreen(),
       );
 
     default:
