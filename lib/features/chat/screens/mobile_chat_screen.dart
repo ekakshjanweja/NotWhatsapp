@@ -5,6 +5,7 @@ import 'package:not_whatsapp/constants/colors.dart';
 import 'package:not_whatsapp/constants/font_styles.dart';
 import 'package:not_whatsapp/features/authentication/controller/auth_controller.dart';
 import 'package:not_whatsapp/features/calls/controller/call_controller.dart';
+import 'package:not_whatsapp/features/calls/screens/call_pickup_screen.dart';
 import 'package:not_whatsapp/features/chat/widgets/message_box.dart';
 import 'package:not_whatsapp/models/user_model.dart';
 import 'package:not_whatsapp/features/chat/widgets/chat_list.dart';
@@ -44,96 +45,100 @@ class MobileChatScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final String appBarName =
         name.length >= 10 ? '${name.substring(0, 10)}....' : name;
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: appBarColor,
-        titleSpacing: 0,
-        title: isGroupChat
-            ? Row(
-                children: [
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      displayImage,
+    return CallPickUpScreen(
+      scaffold: Scaffold(
+        appBar: AppBar(
+          backgroundColor: appBarColor,
+          titleSpacing: 0,
+          title: isGroupChat
+              ? Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(
+                        displayImage,
+                      ),
+                      radius: 20,
                     ),
-                    radius: 20,
-                  ),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  Text(name),
-                ],
-              )
-            : Row(
-                children: [
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      displayImage,
+                    const SizedBox(
+                      width: 16,
                     ),
-                    radius: 20,
-                  ),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  StreamBuilder<UserModel>(
-                      stream:
-                          ref.read(authControllerProvider).userDataById(uid),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Loader();
-                        } else {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                appBarName,
-                                style: FontStyle.titleStyle(),
-                              ),
-                              Text(
-                                snapshot.data!.isOnline ? 'online' : 'offline',
-                                style: FontStyle.subTitleStyle(),
-                              ),
-                            ],
-                          );
-                        }
-                      }),
-                ],
-              ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.call),
-          ),
-          IconButton(
-            onPressed: () {
-              makeACall(ref, context);
-            },
-            icon: const Icon(Icons.video_call),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.more_vert),
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          //Chats List
+                    Text(name),
+                  ],
+                )
+              : Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(
+                        displayImage,
+                      ),
+                      radius: 20,
+                    ),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    StreamBuilder<UserModel>(
+                        stream:
+                            ref.read(authControllerProvider).userDataById(uid),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Loader();
+                          } else {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  appBarName,
+                                  style: FontStyle.titleStyle(),
+                                ),
+                                Text(
+                                  snapshot.data!.isOnline
+                                      ? 'online'
+                                      : 'offline',
+                                  style: FontStyle.subTitleStyle(),
+                                ),
+                              ],
+                            );
+                          }
+                        }),
+                  ],
+                ),
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.call),
+            ),
+            IconButton(
+              onPressed: () {
+                makeACall(ref, context);
+              },
+              icon: const Icon(Icons.video_call),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.more_vert),
+            ),
+          ],
+        ),
+        body: Column(
+          children: [
+            //Chats List
 
-          Expanded(
-            child: ChatList(
+            Expanded(
+              child: ChatList(
+                receiverUserId: uid,
+                isGroupChat: isGroupChat,
+              ),
+            ),
+
+            //Message Box
+
+            MessageBox(
               receiverUserId: uid,
               isGroupChat: isGroupChat,
             ),
-          ),
-
-          //Message Box
-
-          MessageBox(
-            receiverUserId: uid,
-            isGroupChat: isGroupChat,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

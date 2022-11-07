@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:not_whatsapp/common/utils/utils.dart';
 import 'package:not_whatsapp/features/authentication/controller/auth_controller.dart';
 import 'package:not_whatsapp/features/calls/repository/call_repository.dart';
 import 'package:not_whatsapp/models/call_model.dart';
@@ -66,7 +68,31 @@ class CallController {
         hasDialled: false,
       );
 
-      callRepository.makeACall(senderCallData, context, receiverCallData);
+      if (isGroupChat) {
+        callRepository.makeGroupCall(senderCallData, context, receiverCallData);
+      } else {
+        callRepository.makeACall(senderCallData, context, receiverCallData);
+      }
     });
   }
+
+  //Call Stream
+
+  Stream<DocumentSnapshot> get callStream => callRepository.callStream;
+
+  //End Call
+
+  void endCall(
+    String callerId,
+    String receiverId,
+    BuildContext context,
+  ) {
+    callRepository.endCall(
+      callerId,
+      receiverId,
+      context,
+    );
+  }
+
+  
 }
