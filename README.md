@@ -1,16 +1,25 @@
-# not_whatsapp
 
-A new Flutter project.
+# NotWhatsapp - A Whatsapp Clone
 
-## Getting Started
+NotWhatsapp is a Whatsapp clone created using flutter and firebase.
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Tech Stack
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+**Client:** Flutter
+
+**Server:** Go, Heroku, Firebase
+
+
+## App Link
+
+Google Drive  Apk Link: https://drive.google.com/file/d/1v4Gjv2rGPkc7SIudtZbGkxN6LbCQUTu9/view?usp=sharing
+## Features
+
+- Group Chat
+- GIF Support
+- Video Call
+- Emoji and Image Support
+- Status
+
