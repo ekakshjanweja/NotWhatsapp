@@ -22,4 +22,5 @@ Google Drive  Apk Link: https://drive.google.com/file/d/1v4Gjv2rGPkc7SIudtZbGkxN
 - Video Call
 - Emoji and Image Support
 - Status
+- State Managment using riverpod
 
